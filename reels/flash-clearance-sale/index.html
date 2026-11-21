@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=block"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --ground: #111;
+        --ink: #ffffff;
+        --muted: rgba(255, 255, 255, 0.78);
+        --orchid: #d77fc4;
+        --font-display: "Playfair Display", Georgia, serif;
+        --font-body: "Inter", Helvetica, Arial, sans-serif;
+        --safe: 192px; /* 10% of 1920 */
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1080px; height: 1920px; overflow: hidden; background: var(--ground);
+      }
+      #root { position: relative; width: 100%; height: 100%; font-family: var(--font-body); }
+
+      #bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+      /* soft scrims for legibility */
+      .scrim-top {
+        position: absolute; left: 0; right: 0; top: 0; height: 560px;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.55) 55%, rgba(255,255,255,0) 100%);
+      }
+      .scrim-bottom {
+        position: absolute; left: 0; right: 0; bottom: 0; height: 900px;
+        background: linear-gradient(to top, rgba(10,8,10,0.92) 0%, rgba(10,8,10,0.7) 55%, rgba(10,8,10,0) 100%);
+      }
+
+      #logo {
+        position: absolute; top: var(--safe); left: 50%;
+        width: 470px; margin-left: -235px;
+      }
+
+      #url {
+        position: absolute; bottom: var(--safe); left: 0; right: 0;
+        text-align: center; color: var(--muted);
+        font-size: 30px; font-weight: 500; letter-spacing: 0.24em; text-transform: lowercase;
+      }
+
+      .scene {
+        position: absolute; left: 0; right: 0; bottom: calc(var(--safe) + 110px);
+        display: flex; flex-direction: column; align-items: center; text-align: center;
+        color: var(--ink); opacity: 0;
+      }
+      .eyebrow {
+        font-size: 30px; font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase;
+        color: var(--orchid);
+      }
+      .big {
+        font-family: var(--font-display); font-weight: 600; font-size: 168px;
+        line-height: 1; letter-spacing: -0.01em; margin-top: 18px;
+      }
+      .mid {
+        font-family: var(--font-display); font-weight: 500; font-size: 96px; line-height: 1.05;
+        margin-top: 14px;
+      }
+      .mid em { font-style: italic; color: var(--orchid); }
+      .rule { width: 72px; height: 2px; background: var(--ink); opacity: 0.6; margin: 34px 0 30px; }
+      .sub {
+        font-size: 34px; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
+      }
+      .pill {
+        margin-top: 40px; padding: 26px 64px; border-radius: 999px; background: var(--ink); color: #1a1218;
+        font-size: 34px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="15.6" data-width="1080" data-height="1920">
+      <video id="bg" class="clip" src="clean.mp4" muted playsinline
+        data-start="0" data-duration="15.6" data-track-index="0"></video>
+
+      <div class="scrim-top"></div>
+      <div class="scrim-bottom"></div>
+
+      <img id="logo" src="logo.png" alt="Purpuls" />
+
+      <!-- Scene 1: Flash Clearance Sale -->
+      <div id="s1" class="scene">
+        <div class="eyebrow">Flash</div>
+        <div class="big" style="font-size:150px">Clearance</div>
+        <div class="mid" style="margin-top:4px"><em>Sale</em></div>
+        <div class="rule"></div>
+        <div class="sub">Ending Soon</div>
+      </div>
+
+      <!-- Scene 2: Buy 2 Get 1 -->
+      <div id="s2" class="scene">
+        <div class="eyebrow">Buy 2 Get 1</div>
+        <div class="mid"><em>Free</em> Gift</div>
+      </div>
+
+      <!-- Scene 3: 2 for 1899 -->
+      <div id="s3" class="scene">
+        <div class="eyebrow">Special Price</div>
+        <div class="mid">2 for <em>1899</em></div>
+      </div>
+
+      <!-- Scene 4: Upto 70% off -->
+      <div id="s4" class="scene">
+        <div class="eyebrow">Up to</div>
+        <div class="big">70% <span style="font-size:96px;font-style:italic;font-weight:500;color:var(--orchid)">off</span></div>
+      </div>
+
+      <!-- Scene 5: CTA -->
+      <div id="s5" class="scene">
+        <div class="sub">We are almost sold out</div>
+        <div class="mid">Grab <em>yours</em> now</div>
+        <div class="pill">Shop Now</div>
+      </div>
+
+      <div id="url">www.purpuls.com</div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      // Brand + footer settle in
+      tl.fromTo("#logo", { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 0.1);
+      tl.fromTo("#url", { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "power2.out" }, 0.4);
+
+      // Scene windows [start, end]
+      const scenes = [
+        ["#s1", 0.3, 3.4],
+        ["#s2", 3.4, 6.5],
+        ["#s3", 6.5, 9.6],
+        ["#s4", 9.6, 12.6],
+        ["#s5", 12.6, 15.6],
+      ];
+      scenes.forEach(([sel, start, end], i) => {
+        const kids = `${sel} > *`;
+        tl.set(sel, { opacity: 1 }, start);
+        tl.fromTo(kids, { opacity: 0, y: 28 },
+          { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", stagger: 0.09 }, start);
+        if (i < scenes.length - 1) {
+          tl.to(kids, { opacity: 0, y: -16, duration: 0.35, ease: "power2.in", stagger: 0.04 }, end - 0.45);
+          tl.set(sel, { opacity: 0 }, end);
+        }
+      });
+
+      // Gentle CTA pulse
+      tl.to("#s5 .pill", { scale: 1.05, duration: 0.45, ease: "sine.inOut", yoyo: true, repeat: 3 }, 13.6);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
